@@ -6,13 +6,15 @@
 class Server final
 {
 public:
-    explicit Server();
+    explicit Server(std::unique_ptr<IFileHandler> fileHandler);
     void Stop();
+
+    static std::unique_ptr<Server> Create();
 
 private:
     std::vector<std::string> _lines;
     CommunicationThread _communicationThread;
-    FileHandler _fileHandler;
+    std::unique_ptr<IFileHandler> _fileHandler;
 
     void SaveLines();
     void ProcessLine(std::string const& line);

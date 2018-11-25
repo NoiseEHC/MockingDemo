@@ -6,10 +6,10 @@ using namespace std;
 int main()
 {
     cout << "Starting server.\n";
-    Server obj{};
+    auto obj = Server::Create();
     cout << "Press ENTER to shut-down.\n";
     getchar();
     cout << "Stopping server.\n";
-    obj.Stop();
+    obj->Stop();
     cout << "Server stopped.\n";
 }
