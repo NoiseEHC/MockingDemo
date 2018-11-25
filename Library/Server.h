@@ -5,6 +5,8 @@
 
 class Server final
 {
+    friend class FriendClass;
+
 public:
     explicit Server(std::unique_ptr<IFileHandler> fileHandler);
     void Stop();

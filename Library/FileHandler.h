@@ -3,6 +3,7 @@
 class IFileHandler
 {
 public:
+    virtual ~IFileHandler() = default;
     virtual std::unique_ptr<std::ostream> OpenOutput() const = 0;
     virtual void FinishOutput(std::ostream& file) const = 0;
 };

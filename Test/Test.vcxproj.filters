@@ -4,8 +4,10 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TestServer.cpp" />
+    <ClCompile Include="FriendClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="FriendClass.h" />
   </ItemGroup>
 </Project>
