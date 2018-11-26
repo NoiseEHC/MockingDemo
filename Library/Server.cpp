@@ -4,15 +4,16 @@
 using namespace std;
 using namespace placeholders;
 
-Server::Server(unique_ptr<IFileHandler> fileHandler):
-    _communicationThread{bind(&Server::ProcessLine, this, _1)},
+Server::Server(unique_ptr<IFileHandler> fileHandler, unique_ptr<ICommunicationThread> communicationThread):
+    _communicationThread{move(communicationThread)},
     _fileHandler{move(fileHandler)}
 {
+    _communicationThread->Start(bind(&Server::ProcessLine, this, _1));
 }
 
 void Server::Stop()
 {
-    _communicationThread.Stop();
+    _communicationThread->Stop();
     SaveLines();
 }
 
@@ -37,6 +38,7 @@ void Server::ProcessLine(string const& line)
 unique_ptr<Server> Server::Create()
 {
     return make_unique<Server>(
-        make_unique<FileHandler>("c:/temp")
+        make_unique<FileHandler>("c:/temp"),
+        make_unique<CommunicationThread>()
     );
 }

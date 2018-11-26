@@ -3,16 +3,20 @@
 
 using namespace std;
 
-CommunicationThread::CommunicationThread(function<void(string)> callback):
-    _callback{move(callback)},
-    _exit{false},
-    _workThread{bind(&CommunicationThread::ThreadProc, this)}
+CommunicationThread::CommunicationThread():
+    _exit{false}
 {
 }
 
 CommunicationThread::~CommunicationThread()
 {
     Stop();
+}
+
+void CommunicationThread::Start(function<void(string)> callback)
+{
+    _callback = move(callback);
+    _workThread = thread{bind(&CommunicationThread::ThreadProc, this)};
 }
 
 void CommunicationThread::Stop()
