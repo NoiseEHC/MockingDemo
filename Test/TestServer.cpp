@@ -9,7 +9,7 @@ using namespace fakeit;
 
 TEST_CASE("Test the file handling")
 {
-    Mock<ICommunicationThread> mockComm{};
+    Mock<CommunicationThread> mockComm{};
     When(Method(mockComm,Start)).AlwaysDo([&](function<void(string)> callback) { ; });
     Fake(Method(mockComm,Stop));
     Fake(Dtor(mockComm));
@@ -21,7 +21,7 @@ TEST_CASE("Test the file handling")
     {
         Fake(Method(mockHandler,FinishOutput));
 
-        Server sut{unique_ptr<IFileHandler>{&mockHandler.get()}, unique_ptr<ICommunicationThread>{&mockComm.get()}};
+        Server sut{unique_ptr<IFileHandler>{&mockHandler.get()}, unique_ptr<CommunicationThread>{&mockComm.get()}};
         auto const processLine = FriendClass::GetProcessLine(sut);
 
         processLine("1");
@@ -39,7 +39,7 @@ TEST_CASE("Test the file handling")
             output = dynamic_cast<ostringstream&>(file).str();
         });
 
-        Server sut{unique_ptr<IFileHandler>{&mockHandler.get()}, unique_ptr<ICommunicationThread>{&mockComm.get()}};
+        Server sut{unique_ptr<IFileHandler>{&mockHandler.get()}, unique_ptr<CommunicationThread>{&mockComm.get()}};
         auto const processLine = FriendClass::GetProcessLine(sut);
 
         processLine("1");

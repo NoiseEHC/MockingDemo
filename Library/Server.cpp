@@ -4,7 +4,7 @@
 using namespace std;
 using namespace placeholders;
 
-Server::Server(unique_ptr<IFileHandler> fileHandler, unique_ptr<ICommunicationThread> communicationThread):
+Server::Server(unique_ptr<IFileHandler> fileHandler, unique_ptr<CommunicationThread> communicationThread):
     _communicationThread{move(communicationThread)},
     _fileHandler{move(fileHandler)}
 {

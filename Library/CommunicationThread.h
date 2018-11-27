@@ -2,21 +2,13 @@
 
 #include <functional>
 
-class ICommunicationThread
-{
-public:
-    virtual ~ICommunicationThread() = default;
-    virtual void Start(std::function<void(std::string)> callback) = 0;
-    virtual void Stop() = 0;
-};
-
-class CommunicationThread final : public ICommunicationThread
+class CommunicationThread
 {
 public:
     explicit CommunicationThread();
-    ~CommunicationThread();
-    void Start(std::function<void(std::string)> callback) override;
-    void Stop() override;
+    virtual ~CommunicationThread();
+    virtual void Start(std::function<void(std::string)> callback);
+    virtual void Stop();
 
 private:
     std::function<void(std::string)> _callback;
