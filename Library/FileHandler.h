@@ -1,12 +1,12 @@
 #pragma once
 
-class FileHandler
+class FileHandler FINAL
 {
 public:
     explicit FileHandler(std::string directory);
 
-    virtual std::unique_ptr<std::ostream> OpenOutput() const;
-    virtual void FinishOutput(std::ostream& file) const;
+    MOCKABLE std::unique_ptr<std::ostream> OpenOutput() const;
+    MOCKABLE void FinishOutput(std::ostream& file) const;
 
 private:
     std::string _directory;

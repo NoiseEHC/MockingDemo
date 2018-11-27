@@ -2,13 +2,13 @@
 
 #include <functional>
 
-class CommunicationThread
+class CommunicationThread FINAL
 {
 public:
     explicit CommunicationThread();
-    virtual ~CommunicationThread();
-    virtual void Start(std::function<void(std::string)> callback);
-    virtual void Stop();
+    MOCKABLE ~CommunicationThread();
+    MOCKABLE void Start(std::function<void(std::string)> callback);
+    MOCKABLE void Stop();
 
 private:
     std::function<void(std::string)> _callback;

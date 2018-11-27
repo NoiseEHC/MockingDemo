@@ -11,4 +11,12 @@
 
 #include <fmt/core.h>
 
+#if _DEBUG
+#define MOCKABLE virtual
+#define FINAL
+#else
+#define MOCKABLE
+#define FINAL final
+#endif
+
 #endif //PCH_H
