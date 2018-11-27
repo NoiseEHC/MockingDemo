@@ -13,7 +13,7 @@ TEST_CASE("Test the file handling")
     When(Method(mockComm,Start)).AlwaysDo([&](function<void(string)> callback) { ; });
     Fake(Method(mockComm,Stop));
     Fake(Dtor(mockComm));
-    Mock<IFileHandler> mockHandler{};
+    Mock<FileHandler> mockHandler{};
     When(Method(mockHandler,OpenOutput)).AlwaysDo([]() { return make_unique<ostringstream>(); });
     Fake(Dtor(mockHandler));
 
@@ -21,7 +21,7 @@ TEST_CASE("Test the file handling")
     {
         Fake(Method(mockHandler,FinishOutput));
 
-        Server sut{unique_ptr<IFileHandler>{&mockHandler.get()}, unique_ptr<CommunicationThread>{&mockComm.get()}};
+        Server sut{move(mockHandler.get()), unique_ptr<CommunicationThread>{&mockComm.get()}};
         auto const processLine = FriendClass::GetProcessLine(sut);
 
         processLine("1");
@@ -39,7 +39,7 @@ TEST_CASE("Test the file handling")
             output = dynamic_cast<ostringstream&>(file).str();
         });
 
-        Server sut{unique_ptr<IFileHandler>{&mockHandler.get()}, unique_ptr<CommunicationThread>{&mockComm.get()}};
+        Server sut{mockHandler.get(), unique_ptr<CommunicationThread>{&mockComm.get()}};
         auto const processLine = FriendClass::GetProcessLine(sut);
 
         processLine("1");

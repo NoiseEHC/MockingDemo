@@ -4,7 +4,7 @@
 using namespace std;
 using namespace placeholders;
 
-Server::Server(unique_ptr<IFileHandler> fileHandler, unique_ptr<CommunicationThread> communicationThread):
+Server::Server(FileHandler fileHandler, unique_ptr<CommunicationThread> communicationThread):
     _communicationThread{move(communicationThread)},
     _fileHandler{move(fileHandler)}
 {
@@ -19,13 +19,13 @@ void Server::Stop()
 
 void Server::SaveLines()
 {
-    auto const file = _fileHandler->OpenOutput();
+    auto const file = _fileHandler.OpenOutput();
 
     for (auto const& s : _lines)
         *file << s << "\n";
     _lines.clear();
 
-    _fileHandler->FinishOutput(*file);
+    _fileHandler.FinishOutput(*file);
 }
 
 void Server::ProcessLine(string const& line)
@@ -38,7 +38,7 @@ void Server::ProcessLine(string const& line)
 unique_ptr<Server> Server::Create()
 {
     return make_unique<Server>(
-        make_unique<FileHandler>("c:/temp"),
+		FileHandler{"c:/temp"},
         make_unique<CommunicationThread>()
     );
 }

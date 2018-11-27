@@ -1,19 +1,18 @@
 #pragma once
 
-class IFileHandler
-{
-public:
-    virtual ~IFileHandler() = default;
-    virtual std::unique_ptr<std::ostream> OpenOutput() const = 0;
-    virtual void FinishOutput(std::ostream& file) const = 0;
-};
-
-class FileHandler final : public IFileHandler
+class FileHandler
 {
 public:
     explicit FileHandler(std::string directory);
-    std::unique_ptr<std::ostream> OpenOutput() const override;
-    void FinishOutput(std::ostream& file) const override;
+
+    FileHandler(FileHandler const&) = default;
+    FileHandler& operator=(FileHandler const&) = default;
+    FileHandler(FileHandler&&) noexcept = default;
+    FileHandler& operator=(FileHandler&&) noexcept = default;
+
+    virtual ~FileHandler() = default;
+    virtual std::unique_ptr<std::ostream> OpenOutput() const;
+    virtual void FinishOutput(std::ostream& file) const;
 
 private:
     std::string _directory;
