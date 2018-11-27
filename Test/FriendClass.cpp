@@ -9,3 +9,8 @@ function<void(string const&)> FriendClass::GetProcessLine(Server& server)
 {
 	return bind(&Server::ProcessLine, &server, _1);
 }
+
+FileHandler& FriendClass::GetFileHandler(Server& server)
+{
+    return server._fileHandler;
+}

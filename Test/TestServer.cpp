@@ -13,15 +13,16 @@ TEST_CASE("Test the file handling")
     When(Method(mockComm,Start)).AlwaysDo([&](function<void(string)> callback) { ; });
     Fake(Method(mockComm,Stop));
     Fake(Dtor(mockComm));
-    Mock<FileHandler> mockHandler{};
+
+    Server sut{FileHandler{"non-existent folder"}, unique_ptr<CommunicationThread>{&mockComm.get()}};
+
+    Mock<FileHandler> mockHandler{FriendClass::GetFileHandler(sut)};
     When(Method(mockHandler,OpenOutput)).AlwaysDo([]() { return make_unique<ostringstream>(); });
-    Fake(Dtor(mockHandler));
 
     SECTION("Test SaveLines")
     {
         Fake(Method(mockHandler,FinishOutput));
 
-        Server sut{move(mockHandler.get()), unique_ptr<CommunicationThread>{&mockComm.get()}};
         auto const processLine = FriendClass::GetProcessLine(sut);
 
         processLine("1");
@@ -39,7 +40,6 @@ TEST_CASE("Test the file handling")
             output = dynamic_cast<ostringstream&>(file).str();
         });
 
-        Server sut{mockHandler.get(), unique_ptr<CommunicationThread>{&mockComm.get()}};
         auto const processLine = FriendClass::GetProcessLine(sut);
 
         processLine("1");
